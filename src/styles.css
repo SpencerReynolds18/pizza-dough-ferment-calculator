@@ -236,8 +236,67 @@ body {
   margin-left: 4px;
 }
 
-.field-flour input {
-  max-width: 240px;
+.field-flour .field-label,
+.field-flour .input-with-unit {
+  max-width: calc(50% - 8px);
+}
+
+@media (max-width: 480px) {
+  .field-flour .field-label,
+  .field-flour .input-with-unit {
+    max-width: 100%;
+  }
+}
+
+.input-with-unit {
+  display: flex;
+  align-items: stretch;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.input-with-unit:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(233, 138, 58, 0.25);
+}
+
+.input-with-unit input[type='number'] {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 12px 0 12px 14px;
+  color: var(--text);
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+}
+
+.input-with-unit input[type='number']:focus-visible {
+  outline: none;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.input-with-unit input[type='number']::-webkit-outer-spin-button,
+.input-with-unit input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-unit {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 14px 0 6px;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.95rem;
+  pointer-events: none;
+  user-select: none;
 }
 
 .result {

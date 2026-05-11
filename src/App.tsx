@@ -190,32 +190,35 @@ export default function App() {
                   </button>
                 </span>
               </span>
-              <input
-                type="number"
-                inputMode="decimal"
-                step={tempStep}
-                value={tempDisplay}
-                onChange={(event) => handleTempChange(event.target.value)}
-              />
+              <div className="input-with-unit">
+                <input
+                  type="number"
+                  inputMode="decimal"
+                  step={tempStep}
+                  value={tempDisplay}
+                  onChange={(event) => handleTempChange(event.target.value)}
+                />
+                <span className="input-unit" aria-hidden="true">{`°${tempUnit}`}</span>
+              </div>
             </label>
           </div>
 
           <label className="field field-flour">
-            <span className="field-label">
-              Flour weight
-              <span className="field-meta">grams (optional)</span>
-            </span>
-            <input
-              type="number"
-              inputMode="decimal"
-              min={1}
-              step={10}
-              value={flourGrams}
-              onChange={(event) => {
-                const value = Number(event.target.value)
-                if (Number.isFinite(value) && value >= 0) setFlourGrams(value)
-              }}
-            />
+            <span className="field-label">Flour weight</span>
+            <div className="input-with-unit">
+              <input
+                type="number"
+                inputMode="decimal"
+                min={1}
+                step={10}
+                value={flourGrams}
+                onChange={(event) => {
+                  const value = Number(event.target.value)
+                  if (Number.isFinite(value) && value >= 0) setFlourGrams(value)
+                }}
+              />
+              <span className="input-unit" aria-hidden="true">g</span>
+            </div>
           </label>
         </section>
 
