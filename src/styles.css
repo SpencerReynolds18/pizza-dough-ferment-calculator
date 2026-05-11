@@ -1,0 +1,335 @@
+:root {
+  color-scheme: dark;
+  --bg: #1a120b;
+  --bg-2: #261a10;
+  --surface: #30221a;
+  --surface-2: #3b2a20;
+  --line: rgba(255, 240, 220, 0.08);
+  --text: #f7ecdc;
+  --text-dim: #c8b8a4;
+  --text-muted: #8a7762;
+  --accent: #e98a3a;
+  --accent-strong: #f3a45c;
+  --crust: #c45c2a;
+  --tomato: #b83e2a;
+  --basil: #6f9a55;
+  --shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+  --radius: 18px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at top left, rgba(233, 138, 58, 0.18), transparent 55%),
+    radial-gradient(ellipse at bottom right, rgba(184, 62, 42, 0.18), transparent 55%),
+    var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 48px);
+}
+
+.card {
+  width: min(640px, 100%);
+  background: linear-gradient(180deg, var(--bg-2), var(--surface));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: clamp(20px, 4vw, 36px);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.hero h1 {
+  margin: 0 0 6px;
+  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.hero-sub {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.field legend,
+.field-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  text-transform: uppercase;
+}
+
+.field-meta {
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 480px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field input[type='number'] {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.field input[type='number']:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(233, 138, 58, 0.25);
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 6px;
+}
+
+@media (max-width: 480px) {
+  .segmented {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.segment {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 10px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: background 120ms ease, color 120ms ease, transform 120ms ease;
+  user-select: none;
+  border: 1px solid transparent;
+}
+
+.segment input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.segment-label {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.segment-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+.segment.is-active {
+  background: linear-gradient(180deg, rgba(233, 138, 58, 0.22), rgba(196, 92, 42, 0.22));
+  border-color: rgba(233, 138, 58, 0.6);
+  box-shadow: inset 0 0 0 1px rgba(233, 138, 58, 0.2);
+}
+
+.segment.is-active .segment-label {
+  color: var(--accent-strong);
+}
+
+.unit-toggle {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.unit-toggle.is-active {
+  color: var(--bg);
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+}
+
+.unit-toggle + .unit-toggle {
+  margin-left: 4px;
+}
+
+.field-flour input {
+  max-width: 240px;
+}
+
+.result {
+  background: linear-gradient(180deg, rgba(233, 138, 58, 0.08), rgba(184, 62, 42, 0.08));
+  border: 1px solid rgba(233, 138, 58, 0.2);
+  border-radius: var(--radius);
+  padding: clamp(18px, 3vw, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.result-empty h2 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  color: var(--text);
+}
+
+.result-headline {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.result-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.result-time {
+  font-size: clamp(2.2rem, 7vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--accent-strong);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.05;
+}
+
+.result-decimal {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px 20px;
+  margin: 0;
+  padding-top: 4px;
+  border-top: 1px solid var(--line);
+}
+
+.meta div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.meta dt {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.meta dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.notes {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.footnote {
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.footnote p {
+  margin: 0;
+}
