@@ -186,7 +186,7 @@ export function lookupFermentHours(req: LookupRequest): LookupResult {
 
 export function formatHours(hours: number): string {
   if (!Number.isFinite(hours) || hours <= 0) return '—'
-  const totalMinutes = Math.round(hours * 60)
+  const totalMinutes = Math.round((hours * 60) / 15) * 15
   const h = Math.floor(totalMinutes / 60)
   const m = totalMinutes % 60
   if (h === 0) return `${m} min`

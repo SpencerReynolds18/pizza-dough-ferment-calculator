@@ -90,4 +90,10 @@ describe('formatHours', () => {
   it('renders sub-hour values as minutes only', () => {
     expect(formatHours(0.75)).toBe('45 min')
   })
+  it('rounds to the nearest 15 minutes', () => {
+    expect(formatHours(27.9667)).toBe('28 h')
+    expect(formatHours(6.3)).toBe('6 h 15 min')
+    expect(formatHours(1.1)).toBe('1 h')
+    expect(formatHours(0.45)).toBe('30 min')
+  })
 })

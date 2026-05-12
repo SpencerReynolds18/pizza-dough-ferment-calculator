@@ -20,39 +20,34 @@ interface YeastDefaults {
 
 const YEAST_DEFAULTS: Record<YeastType, YeastDefaults> = {
   IDY: {
-    percent: 0.05,
-    step: 0.005,
-    min: 0.001,
+    percent: 0.7,
+    step: 0.1,
+    min: 0.1,
     max: 1.0,
     description: 'SAF Red, Saf-Instant, Fleischmann\u2019s Instant.',
   },
   ADY: {
-    percent: 0.07,
-    step: 0.005,
-    min: 0.001,
+    percent: 0.7,
+    step: 0.1,
+    min: 0.1,
     max: 1.3,
     description: 'Active dry yeast (rehydrate before use for best results).',
   },
   CY: {
-    percent: 0.2,
-    step: 0.05,
-    min: 0.01,
+    percent: 1,
+    step: 0.1,
+    min: 0.1,
     max: 3.0,
     description: 'Fresh / cake / compressed yeast (often sold refrigerated).',
   },
   SS: {
-    percent: 10,
-    step: 1,
+    percent: 20,
+    step: 0.1,
     min: 1,
     max: 40,
     description: 'Sourdough starter, expressed as % of flour weight.',
   },
 }
-
-const NUMBER_FORMAT_HOURS = new Intl.NumberFormat(undefined, {
-  minimumFractionDigits: 1,
-  maximumFractionDigits: 1,
-})
 
 const NUMBER_FORMAT_PCT = new Intl.NumberFormat(undefined, {
   minimumFractionDigits: 0,
@@ -72,8 +67,8 @@ export default function App() {
   const [yeastType, setYeastType] = useState<YeastType>('IDY')
   const [bakerPercent, setBakerPercent] = useState<number>(YEAST_DEFAULTS.IDY.percent)
   const [tempUnit, setTempUnit] = useState<TempUnit>('F')
-  const [tempC, setTempC] = useState<number>(4)
-  const [flourGrams, setFlourGrams] = useState<number>(500)
+  const [tempC, setTempC] = useState<number>(fahrenheitToCelsius(38))
+  const [flourGrams, setFlourGrams] = useState<number>(1000)
 
   const result = useMemo(
     () =>
@@ -92,6 +87,13 @@ export default function App() {
   const handleYeastTypeChange = (next: YeastType) => {
     setYeastType(next)
     setBakerPercent(YEAST_DEFAULTS[next].percent)
+  }
+
+  const handleBakerPercentBlur = () => {
+    if (!Number.isFinite(bakerPercent)) return
+    const snapped = Number((Math.round(bakerPercent / defaults.step) * defaults.step).toFixed(1))
+    const clamped = Math.max(defaults.min, Math.min(defaults.max, snapped))
+    if (clamped !== bakerPercent) setBakerPercent(clamped)
   }
 
   const handleTempChange = (raw: string) => {
@@ -152,22 +154,30 @@ export default function App() {
 
           <div className="row">
             <label className="field">
-              <span className="field-label">
-                Yeast (baker&rsquo;s %)
-                <span className="field-meta">% of flour weight</span>
-              </span>
-              <input
-                type="number"
-                inputMode="decimal"
-                step={defaults.step}
-                min={defaults.min}
-                max={defaults.max}
-                value={bakerPercent}
-                onChange={(event) => {
-                  const value = Number(event.target.value)
-                  if (Number.isFinite(value)) setBakerPercent(value)
-                }}
-              />
+              <span className="field-label">Yeast (baker&rsquo;s %)</span>
+              <div className="field-with-aside">
+                <div className="input-with-unit input-with-unit--compact">
+                  <input
+                    type="number"
+                    inputMode="decimal"
+                    step={defaults.step}
+                    min={defaults.min}
+                    max={defaults.max}
+                    value={bakerPercent}
+                    onChange={(event) => {
+                      const value = Number(event.target.value)
+                      if (Number.isFinite(value)) setBakerPercent(value)
+                    }}
+                    onBlur={handleBakerPercentBlur}
+                  />
+                  <span className="input-unit" aria-hidden="true">%</span>
+                </div>
+                {flourGrams > 0 && (
+                  <span className="field-aside">
+                    × {flourGrams} g = {yeastGrams.toFixed(yeastGrams < 1 ? 2 : 1)} g
+                  </span>
+                )}
+              </div>
             </label>
 
             <label className="field">
@@ -237,35 +247,18 @@ export default function App() {
               <div className="result-headline">
                 <span className="result-label">Estimated bulk ferment</span>
                 <span className="result-time">{formatHours(result.hours)}</span>
-                <span className="result-decimal">
-                  {NUMBER_FORMAT_HOURS.format(result.hours)} hours
-                </span>
               </div>
 
               <dl className="meta">
                 {result.bracket && (
                   <>
                     <div>
-                      <dt>Temperature bracket</dt>
-                      <dd>
-                        {result.bracket.tempC[0] === result.bracket.tempC[1]
-                          ? formatTemp(result.bracket.tempC[0], tempUnit)
-                          : `${formatTemp(result.bracket.tempC[0], tempUnit)} – ${formatTemp(
-                              result.bracket.tempC[1],
-                              tempUnit,
-                            )}`}
-                      </dd>
+                      <dt>Proof temperature</dt>
+                      <dd>{formatTemp(tempC, tempUnit)}</dd>
                     </div>
                     <div>
-                      <dt>Yeast bracket</dt>
-                      <dd>
-                        {result.bracket.bakerPercent[0] ===
-                        result.bracket.bakerPercent[1]
-                          ? formatPercent(result.bracket.bakerPercent[0])
-                          : `${formatPercent(
-                              result.bracket.bakerPercent[0],
-                            )} – ${formatPercent(result.bracket.bakerPercent[1])}`}
-                      </dd>
+                      <dt>Yeast</dt>
+                      <dd>{formatPercent(bakerPercent)}</dd>
                     </div>
                   </>
                 )}

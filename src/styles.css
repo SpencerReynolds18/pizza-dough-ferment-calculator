@@ -299,6 +299,31 @@ body {
   user-select: none;
 }
 
+.input-with-unit--compact {
+  flex: 0 0 auto;
+  align-self: flex-start;
+}
+
+.input-with-unit--compact input[type='number'] {
+  flex: 0 0 auto;
+  width: 6ch;
+  padding-right: 0;
+}
+
+.field-with-aside {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.field-aside {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 .result {
   background: linear-gradient(180deg, rgba(233, 138, 58, 0.08), rgba(184, 62, 42, 0.08));
   border: 1px solid rgba(233, 138, 58, 0.2);
@@ -335,12 +360,6 @@ body {
   color: var(--accent-strong);
   font-variant-numeric: tabular-nums;
   line-height: 1.05;
-}
-
-.result-decimal {
-  font-size: 0.95rem;
-  color: var(--text-dim);
-  font-variant-numeric: tabular-nums;
 }
 
 .meta {
